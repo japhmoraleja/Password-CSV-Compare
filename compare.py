@@ -45,9 +45,13 @@ os.makedirs(output_directory, exist_ok=True)
 
 # II. __________________________________________________________________________________________________________________
 
-# Read old and new dataframes
+# Read CSV files using Pandas
 df1 = pd.read_csv(file1_path)
 df2 = pd.read_csv(file2_path)
+
+# Replace NaN values with blanks (empty strings)
+df1.fillna('', inplace=True)
+df2.fillna('', inplace=True)
 
 # Extract headers from both dataframes
 header1 = df1.columns[0]
@@ -62,38 +66,34 @@ if header1 != header2:
 
 # Get unique entries from both dataframes
 unique_entries_file1 = set(df1['Title'])
-print ("dataset 1", unique_entries_file1)
-sleep (4)
 unique_entries_file2 = set(df2['Title'])
-print ("dataset 2", unique_entries_file2)
-sleep (4)
 
-# Combine unique entries from both sets
-unique_entries_combined = unique_entries_file1.union(unique_entries_file2)
-print ("combined", unique_entries_combined)
-sleep (6)
-
-# Create a new dataframe with the combined unique entries
-df_combined = pd.DataFrame({'Entry': list(unique_entries_combined)})
-
-# Write unique entries to the output file
-output_path = os.path.join(output_directory, new_entries_filename)
-df_combined.to_csv(output_path, index=False)
-
-print(f"Unique entries written to {output_path}")
-
-sleep (4)
-
-
+# Get rows that are unique to each dataframe
+unique_to_file1 = df1[~df1['Title'].isin(unique_entries_file2)]
+unique_to_file2 = df2[~df2['Title'].isin(unique_entries_file1)]
 
 # III. _________________________________________________________________________________________________________________
 
-# Merge dataframes
-merged_df = pd.merge(df1, df2, how='outer')
+# Merge the two sets of unique rows
+merged_unique = pd.concat([unique_to_file1, unique_to_file2])
 
+
+# Output merged unique dataframe to a CSV file
+output_path_unique = os.path.join(output_directory, new_entries_filename)
+merged_unique.to_csv(output_path_unique, index=False)
+
+print(colored("\n Unique entries stored in: {}.".format(new_entries_filename), "white", "on_blue", attrs=["bold", "underline"]))
+
+# IV. _________________________________________________________________________________________________________________
+
+# Merge dataframes (including original entries)
+merged_df = pd.concat([df1, df2])
+
+# Remove duplicate rows based on all columns
+merged_df = merged_df.drop_duplicates()
 
 # Output merged dataframe to latest.csv
-merged_df.to_csv(os.path.join(output_directory, default_filename_latest), index=False)
-
+output_path_latest = os.path.join(output_directory, latest_filename)
+merged_df.to_csv(output_path_latest, index=False)
 
 print (colored("\n Check your new files in: {}.".format(output_directory), "white", "on_blue", attrs=["bold", "underline"]))
