@@ -65,12 +65,12 @@ if header1 != header2:
         exit()
 
 # Get unique entries from both dataframes
-unique_entries_file1 = set(df1['Title'])
-unique_entries_file2 = set(df2['Title'])
+unique_entries_file1 = set(df1[header1])
+unique_entries_file2 = set(df2[header1])
 
 # Get rows that are unique to each dataframe
-unique_to_file1 = df1[~df1['Title'].isin(unique_entries_file2)]
-unique_to_file2 = df2[~df2['Title'].isin(unique_entries_file1)]
+unique_to_file1 = df1[~df1[header1].isin(unique_entries_file2)]
+unique_to_file2 = df2[~df2[header1].isin(unique_entries_file1)]
 
 # III. _________________________________________________________________________________________________________________
 
