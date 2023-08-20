@@ -11,6 +11,15 @@ This script also ensures that there are no duplication of rows so you can safely
 
 This program was made because I use both Bitwarden on Windows and iCloud Keychain on macOS and I want a way to ensure that both are on parity.
 
-Upcoming:
+
+## Usage
+1. Download compare.py
+2. Place compare.py into folder where new.csv and old.csv are (optional)
+3. Open terminal
+4. Run 
+`python3 compare.py`
+5. Check output
+
+## Upcoming
 
 GUI Frontend
