@@ -13,27 +13,27 @@ print(script_directory)
 # Set default values
 default_datetime = datetime.now().strftime("%d-%b-%y %I %M %p")
 ## default_filename = f"xx {default_datetime}.csv"
-default_file1_path = os.path.join(script_directory, "file1.csv")
-default_file2_path = os.path.join(script_directory, "file2.csv")
-default_filename_difference = f"difference {default_datetime}.csv"
+default_file1_path = os.path.join(script_directory, "new.csv")
+default_file2_path = os.path.join(script_directory, "old.csv")
+default_filename_difference = f"unique {default_datetime}.csv"
 default_filename_latest = f"latest {default_datetime}.csv"
 default_output_directory = f"{script_directory}/{default_datetime}"  # You can adjust this as needed
 
 # Get user input
 file1_path = input(f"Enter the filepath for file1.csv (default: {default_file1_path}): ") or default_file1_path
-print (file1_path, "\n")
+print ("\n", "Chosen file path is: ", file1_path, "\n")
 
 file2_path = input(f"Enter the filepath for file2.csv (default: {default_file2_path}): ") or default_file2_path
-print (file2_path, "\n")
+print ("\n", "Chosen file path is: ", file2_path, "\n")
 
-new_entries_filename = input(f"Enter the filename for new entries.csv (default: {default_filename_difference}): ") or default_filename_difference
-print (new_entries_filename, "\n")
+new_entries_filename = input(f"Enter the filename for new and unique entries.csv (default: {default_filename_difference}): ") or default_filename_difference
+print ("\n", "Chosen file name is: ", new_entries_filename, "\n")
 
 latest_filename = input(f"Enter the filename for latest.csv (default: {default_filename_latest}): ") or default_filename_latest
-print(latest_filename, "\n")
+print("\n", "Chosen file name is: ", latest_filename, "\n")
 
 output_directory = input(f"Enter the directory to put the output files in (default: {default_output_directory}): ") or default_output_directory
-print (default_output_directory, "\n")
+print ("\n", "Chosen file path is: ", default_output_directory, "\n")
 
 # Create the output directory if it doesn't exist
 os.makedirs(output_directory, exist_ok=True)
