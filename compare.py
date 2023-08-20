@@ -4,6 +4,7 @@ from datetime import datetime
 from time import sleep
 from termcolor import colored
 
+# I. ___________________________________________________________________________________________________________________
 
 # Get the directory where the script is located
 script_directory = os.path.dirname(os.path.abspath(__file__))
@@ -22,53 +23,70 @@ default_output_directory = f"{script_directory}/{default_datetime}"  # You can a
 
 
 # Get user input
-file1_path = input(f"Enter the filepath for file1.csv (default: {default_file1_path}): ") or default_file1_path
+file1_path = input(f"\n Enter the filepath for file1.csv (default: {default_file1_path}): ") or default_file1_path
 print (colored("\n Chosen file path is: {}".format(file1_path), "blue", "on_white", attrs=["bold"]))
 
 file2_path = input(f"\n Enter the filepath for file2.csv (default: {default_file2_path}): ") or default_file2_path
 print (colored("\n Chosen file path is: {}".format(file2_path), "blue", "on_white", attrs=["bold"]))
 
-new_entries_filename = input(f"Enter the filename for new and unique entries.csv (default: {default_filename_difference}): ") or default_filename_difference
+new_entries_filename = input(f"\n Enter the filename for new and unique entries.csv (default: {default_filename_difference}): ") or default_filename_difference
 print (colored("\n Chosen filename is: {}".format(new_entries_filename), "blue", "on_white", attrs=["bold"]))
 
-latest_filename = input(f"Enter the filename for latest.csv (default: {default_filename_latest}): ") or default_filename_latest
+latest_filename = input(f"\n Enter the filename for latest.csv (default: {default_filename_latest}): ") or default_filename_latest
 print (colored("\n Chosen filename is: {}".format(latest_filename), "blue", "on_white", attrs=["bold"]))
 
-output_directory = input(f"Enter the directory to put the output files in (default: {default_output_directory}): ") or default_output_directory
+output_directory = input(f"\n Enter the directory to put the output files in (default: {default_output_directory}): ") or default_output_directory
 print (colored("\n Chosen filename is: {}".format(output_directory), "blue", "on_white", attrs=["bold"]))
-
 
 
 # Create the output directory if it doesn't exist
 os.makedirs(output_directory, exist_ok=True)
 
 
-# Read file contents
-with open(file1_path, 'r') as t1, open(file2_path, 'r') as t2:
-    file1 = t1.readlines()
-    file2 = t2.readlines()
-
-
-# Extract headers from both files
-header1 = file1[0]
-header2 = file2[0]
-
-
-# Write new entries to new_entries.csv
-with open(os.path.join(output_directory, new_entries_filename), 'w') as outFile1:
-    # Write headers to the output file
-    outFile1.write(header2)
-
-    # Iterate over the data lines in file2
-    for line in file2[1:]:
-        if line.split(',')[0] not in [entry.split(',')[0] for entry in file1]:
-            outFile1.write(line)
-
+# II. __________________________________________________________________________________________________________________
 
 # Read old and new dataframes
 df1 = pd.read_csv(file1_path)
 df2 = pd.read_csv(file2_path)
 
+# Extract headers from both dataframes
+header1 = df1.columns[0]
+header2 = df2.columns[0]
+
+# Check if headers are the same
+if header1 != header2:
+    user_choice = input("Headers in the old.csv and the new.csv are different. Do you want to continue? (y/n): ")
+    if user_choice.lower() != 'y':
+        print (colored("\n Operation cancelled", "white", "on_red", attrs=["bold", "underline"]))
+        exit()
+
+# Get unique entries from both dataframes
+unique_entries_file1 = set(df1['Title'])
+print ("dataset 1", unique_entries_file1)
+sleep (4)
+unique_entries_file2 = set(df2['Title'])
+print ("dataset 2", unique_entries_file2)
+sleep (4)
+
+# Combine unique entries from both sets
+unique_entries_combined = unique_entries_file1.union(unique_entries_file2)
+print ("combined", unique_entries_combined)
+sleep (6)
+
+# Create a new dataframe with the combined unique entries
+df_combined = pd.DataFrame({'Entry': list(unique_entries_combined)})
+
+# Write unique entries to the output file
+output_path = os.path.join(output_directory, new_entries_filename)
+df_combined.to_csv(output_path, index=False)
+
+print(f"Unique entries written to {output_path}")
+
+sleep (4)
+
+
+
+# III. _________________________________________________________________________________________________________________
 
 # Merge dataframes
 merged_df = pd.merge(df1, df2, how='outer')
