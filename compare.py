@@ -1,6 +1,19 @@
 import pandas as pd
+import os
+from datetime import datetime
 
-with open('file1.csv', 'r') as t1, open('file2.csv', 'r') as t2:
+# Get default values and user input
+default_directory = os.getcwd()
+default_filename = datetime.now().strftime("%d-%b-%y %H:%M")
+
+file1_path = input(f"Enter the filepath for file1.csv (default: {default_directory}): ") or default_directory
+file2_path = input(f"Enter the filepath for file2.csv (default: {default_directory}): ") or default_directory
+new_entries_filename = input(f"Enter the filename for new entries.csv (default: New Entries {default_filename}): ") or f"New Entries {default_filename}"
+latest_filename = input(f"Enter the filename for latest.csv (default: Latest {default_filename}): ") or f"Latest {default_filename}"
+output_directory = input(f"Enter the directory to put the output files in (default: {default_directory}): ") or default_directory
+
+# Read file contents
+with open(file1_path, 'r') as t1, open(file2_path, 'r') as t2:
     fileone = t1.readlines()
     filetwo = t2.readlines()
 
@@ -8,7 +21,8 @@ with open('file1.csv', 'r') as t1, open('file2.csv', 'r') as t2:
 header1 = fileone[0]
 header2 = filetwo[0]
 
-with open('new entries.csv', 'w') as outFile1:
+# Write new entries to new_entries.csv
+with open(os.path.join(output_directory, new_entries_filename), 'w') as outFile1:
     # Write headers to the output file
     outFile1.write(header2)
 
@@ -17,16 +31,14 @@ with open('new entries.csv', 'w') as outFile1:
         if line.split(',')[0] not in [entry.split(',')[0] for entry in fileone]:
             outFile1.write(line)
 
-# Merging the old and new for the latest file
-
-# This is the old passwords file
-df1 = pd.read_csv('file2.csv')
-
-# This is the extracted new lines from the check.py script
-df2 = pd.read_csv('new entries.csv')
+# Read old and new dataframes
+df1 = pd.read_csv(file2_path)
+df2 = pd.read_csv(os.path.join(output_directory, new_entries_filename))
 
 # Merge dataframes
 merged_df = pd.concat([df1, df2])
 
-# Output to file
-merged_df.to_csv('latest.csv', index=False)
+# Output merged dataframe to latest.csv
+merged_df.to_csv(os.path.join(output_directory, latest_filename), index=False)
+
+print("Process completed successfully!")
