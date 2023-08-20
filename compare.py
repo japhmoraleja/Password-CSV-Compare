@@ -61,7 +61,7 @@ with open(os.path.join(output_directory, new_entries_filename), 'w') as outFile1
             outFile1.write(line)
 
 # Read old and new dataframes
-df1 = pd.read_csv(file2_path)
+df1 = pd.read_csv(file1_path)
 df2 = pd.read_csv(file2_path)
 
 # try:
@@ -70,7 +70,7 @@ df2 = pd.read_csv(file2_path)
 #   pass
 
 # Merge dataframes
-merged_df = pd.concat([df1, df2])
+merged_df = pd.merge(df1, df2, how='outer')
 
 # Custom name for the output
 # output_latest = "latest" + latest_filename
