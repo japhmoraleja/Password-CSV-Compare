@@ -4,13 +4,14 @@ from datetime import datetime
 
 # Get default values and user input
 default_directory = os.getcwd()
-default_datetime = datetime.now().strftime("%d-%b-%y %H:%M")
-default_filename = f"{default_datetime}.csv"
+default_datetime = datetime.now().strftime("%d-%b-%y %I:%M %p")
+default_filename_difference = f"difference {default_datetime}.csv"
+default_filename_latest = f"latest {default_datetime}.csv"
 
 file1_path = input(f"Enter the filepath for file1.csv (default: {default_directory}): ") or default_directory
 file2_path = input(f"Enter the filepath for file2.csv (default: {default_directory}): ") or default_directory
-new_entries_filename = input(f"Enter the filename for new entries.csv (default: {default_filename}): ") or default_filename
-latest_filename = input(f"Enter the filename for latest.csv (default: {default_filename}): ") or default_filename
+new_entries_filename = input(f"Enter the filename for new entries.csv (default: {default_filename_difference}): ") or default_filename_difference
+latest_filename = input(f"Enter the filename for latest.csv (default: {default_filename_latest}): ") or default_filename_latest
 output_directory = input(f"Enter the directory to put the output files in (default: {default_datetime}): ") or default_datetime
 
 # Read file contents
@@ -42,4 +43,4 @@ merged_df = pd.concat([df1, df2])
 # Output merged dataframe to latest.csv
 merged_df.to_csv(os.path.join(output_directory, latest_filename), index=False)
 
-print("Check your new files in ", output_directory,".")
+print("Check your new files in", output_directory,".")
