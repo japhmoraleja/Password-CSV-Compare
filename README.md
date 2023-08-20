@@ -10,3 +10,7 @@ The script automatically sends the output into a folder within the local working
 This script also ensures that there are no duplication of rows so you can safely use the output for importing into Bitwarden/Vaultwarden.
 
 This program was made because I use both Bitwarden on Windows and iCloud Keychain on macOS and I want a way to ensure that both are on parity.
+
+Upcoming:
+
+GUI Frontend
