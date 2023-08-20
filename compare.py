@@ -4,13 +4,14 @@ from datetime import datetime
 
 # Get default values and user input
 default_directory = os.getcwd()
-default_filename = datetime.now().strftime("%d-%b-%y %H:%M")
+default_datetime = datetime.now().strftime("%d-%b-%y %H:%M")
+default_filename = f"{default_datetime}.csv"
 
 file1_path = input(f"Enter the filepath for file1.csv (default: {default_directory}): ") or default_directory
 file2_path = input(f"Enter the filepath for file2.csv (default: {default_directory}): ") or default_directory
-new_entries_filename = input(f"Enter the filename for new entries.csv (default: New Entries {default_filename}): ") or f"New Entries {default_filename}"
-latest_filename = input(f"Enter the filename for latest.csv (default: Latest {default_filename}): ") or f"Latest {default_filename}"
-output_directory = input(f"Enter the directory to put the output files in (default: {default_directory}): ") or default_directory
+new_entries_filename = input(f"Enter the filename for new entries.csv (default: {default_filename}): ") or default_filename
+latest_filename = input(f"Enter the filename for latest.csv (default: {default_filename}): ") or default_filename
+output_directory = input(f"Enter the directory to put the output files in (default: {default_datetime}): ") or default_datetime
 
 # Read file contents
 with open(file1_path, 'r') as t1, open(file2_path, 'r') as t2:
@@ -41,4 +42,4 @@ merged_df = pd.concat([df1, df2])
 # Output merged dataframe to latest.csv
 merged_df.to_csv(os.path.join(output_directory, latest_filename), index=False)
 
-print("Process completed successfully!")
+print("Check your new files in ", output_directory,".")
