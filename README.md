@@ -1,8 +1,8 @@
 # Password-CSV-Compare
 
 This Python script compares two .csv files named 'new.csv' and 'old.csv' and outputs:
-    1. List of rows that are unique to one another
-    2. Merged file containing the output of #1 with the 'new.csv'
+1.  List of rows that are unique to one another
+2. Merged file containing the output of #1 with the 'new.csv'
 
 The script automatically sends the output into a folder within the local working directory with the date and time by default. You can specify what file name and/or directory you want to send the output to.
 
